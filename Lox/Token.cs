@@ -14,15 +14,8 @@ namespace Lox
         private string v;
         private object p;
 
-        public Token(object eOF, string v, object p, int line)
-        {
-            this.eOF = eOF;
-            this.v = v;
-            this.p = p;
-            this.line = line;
-        }
 
-        Token(TokenType type, String lexeme, Object literal, int line)
+       public Token(TokenType type, String lexeme, Object literal, int line)
         {
             this.type = type;
             this.lexeme = lexeme;

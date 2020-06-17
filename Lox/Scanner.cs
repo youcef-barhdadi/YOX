@@ -14,11 +14,6 @@ namespace Lox
         private int line = 1;
         Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>();
 
-
-
-
-
-
         public Scanner(string source)
         {
             this.source = source;
@@ -46,7 +41,6 @@ namespace Lox
         {
             while (!isAtEnd())
             {
-                // We are at the beginning of the next lexeme.
                 start = current;
                 scanToken();
             }
@@ -113,11 +107,8 @@ namespace Lox
             string text = source.Substring(start, current);
 
             TokenType type = TokenType.IDENTIFIER;
-        bool exist =    keywords.TryGetValue(text, out type);
-      
-        
-
-                addToken(type);
+            bool exist =    keywords.TryGetValue(text, out type);
+            addToken(type);
         }
 
         private bool isDigit(char c)
@@ -129,10 +120,8 @@ namespace Lox
         {
             while (isDigit(peek())) advance();
 
-            // Look for a fractional part.
             if (peek() == '.' && char.IsDigit(peekNext()))
             {
-                // Consume the "."
                 advance();
 
                 while (char.IsDigit(peek())) advance();
