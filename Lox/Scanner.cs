@@ -73,6 +73,16 @@ namespace Lox
                     {
                         while (peek() != '\n' && !isAtEnd()) advance();
                     }
+                    else if (match('*'))
+                    {
+                        /**/
+                        while ((peek() != '*' && peekNext() != '/'))
+                        {
+                            if (peek() == '\n')
+                                line++;
+                            advance();
+                        }
+                    }
                     else
                         addToken(TokenType.SLASH);
 
@@ -110,7 +120,7 @@ namespace Lox
             bool exist =    keywords.TryGetValue(text, out type);
             addToken(type);
         }
-
+       
         private bool isDigit(char c)
         {
             return c >= '0' && c <= '9';
@@ -152,7 +162,7 @@ namespace Lox
             }
             advance();
 
-            string value = source.Substring(start + 1, current - 1);
+            string value = source.Substring(start + 1,    current - 1  - (start +1));
             addToken(TokenType.STRING, value);
 
 
@@ -182,7 +192,7 @@ namespace Lox
 
         private void addToken(TokenType type, Object literal)
         {
-            String text = source.Substring(start, current);
+            String text = source.Substring(start,    current - start);
             tokens.Add(new Token(type, text, literal, line));
         }
 

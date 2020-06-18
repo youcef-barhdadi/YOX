@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lox
 {
-    class Token
+  public  class Token
     {
         TokenType type;
         string lexeme;
