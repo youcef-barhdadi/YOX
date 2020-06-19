@@ -24,7 +24,7 @@ namespace Lox
                                         new Token(TokenType.MINUS, "-",null, 1)),
                                         new Token(TokenType.PLUS, "+",null, 1), new Literal(6));
 
-            Console.WriteLine(new AstPrinter().print(expression)); ;
+            Console.WriteLine(new RPN().print(expression)); ;
 
         }
 
