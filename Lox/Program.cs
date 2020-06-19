@@ -2,28 +2,35 @@
 using System.Collections.Generic;
 using System.IO;
 using Lox.AST;
+using Lox.Experssion;
 
 namespace Lox
 {
     class Program
     {
 
-         static   bool hadError = false;
+        static bool hadError = false;
 
         static void Main(string[] args)
         {
-            if (args.Length > 1)
-                Console.WriteLine("Usage: jlox [script]");
-            else if (args.Length == 1)
-                runFile(args[0]);
-            else
-                runPromp(); 
+            //    if (args.Length > 1)
+            //        Console.WriteLine("Usage: jlox [script]");
+            //    else if (args.Length == 1)
+            //        runFile(args[0]);
+            //    else
+            //        runPromp();
+
+            Expr expression = new Binary(new Unary(new Literal(1337),
+                                        new Token(TokenType.MINUS, "-",null, 1)),
+                                        new Token(TokenType.PLUS, "+",null, 1), new Literal(6));
+
+            Console.WriteLine(new AstPrinter().print(expression)); ;
 
         }
 
         private static void runPromp()
         {
-            while(true)
+            while (true)
             {
                 string s = Console.ReadLine();
                 run(s);
@@ -47,7 +54,7 @@ namespace Lox
             List<Token> tokens = scanner.scanTokens();
 
 
-            foreach(Token t in tokens)
+            foreach (Token t in tokens)
             {
                 Console.WriteLine(t);
             }
@@ -55,7 +62,7 @@ namespace Lox
 
 
 
-         public static void error(int line, String message)
+        public static void error(int line, String message)
         {
             report(line, "", message);
         }
