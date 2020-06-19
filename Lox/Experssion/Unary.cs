@@ -1,23 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Lox.AST;
 
 namespace Lox.Experssion
 {
     public class Unary : Expr
     {
 
-        Expr right;
-        Token _operator;
+   
+
+        public Expr Right { get; }
+        public Token Operator { get; }
+
         public Unary(Expr right, Token tok)
         {
-            this.right = right;
-            this._operator = tok;
+            this.Right = right;
+            this.Operator = tok;
         }
 
-        public override Expr accepte(IVistor<Expr> vistor)
+        public override T accepte<T>(Stmt.IVistor<T> vistor)
         {
-            return vistor.vist(this);
+            return vistor.visitUnaryExpr(this);
         }
     }
 }

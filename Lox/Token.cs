@@ -18,14 +18,17 @@ namespace Lox
        public Token(TokenType type, String lexeme, Object literal, int line)
         {
             this.type = type;
-            this.lexeme = lexeme;
+            this.Lexeme = lexeme;
             this.literal = literal;
             this.line = line;
         }
 
+        public TokenType Type { get => type; set => type = value; }
+        public string Lexeme { get => lexeme; set => lexeme = value; }
+
         public override String ToString()
         {
-            return type + " " + lexeme + " " + literal;
+            return type + " " + Lexeme + " " + literal;
         }
 
 

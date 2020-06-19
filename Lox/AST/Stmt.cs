@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lox.Experssion;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,10 +11,13 @@ namespace Lox.AST
     {
         public abstract T Accept<T>(IVistor<T> visitor);
 
-        public interface  IVistor<T>
+        public interface  IVistor<T> 
         {
 
-            T visit(T t);
+            T visitGroupingExpr(Grouping t);
+            T visitLiteralExpr(Literal t);
+            T visitBinaryExpr(Binary t);
+            T visitUnaryExpr(Unary t);
         }
     }
 }

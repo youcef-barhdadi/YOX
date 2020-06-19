@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Lox.AST;
 namespace Lox.Experssion
 {
-     public class Grouping : Expr
+    public class Grouping : Expr
     {
         Expr expression;
+
+
+
+        public Expr Experssion
+        {
+            get { return this.expression; } 
+        }
 
 
         public Grouping(Expr exprssion)
@@ -14,9 +21,12 @@ namespace Lox.Experssion
             this.expression = exprssion;
         }
 
-        public override T accepte<T>(IExprVisitor<T> vistor)
+        public override T accepte<T>(Stmt.IVistor<T> vistor)
         {
-            return  vistor.vistGroup(this);
+            return vistor.visitGroupingExpr(this);
         }
     }
+
+
+ 
 }

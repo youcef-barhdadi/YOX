@@ -11,7 +11,7 @@ namespace Lox.Experssion
     {
 
 
-        public abstract T accepte<T>(IExprVisitor<T> vistor);
+        public abstract T accepte<T>(Stmt.IVistor<T> vistor);
 
     }
 }

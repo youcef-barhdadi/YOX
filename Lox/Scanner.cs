@@ -114,7 +114,7 @@ namespace Lox
         private void identifier()
         {
             while (isAlphaNumeric(peek())) advance();
-            string text = source.Substring(start, current);
+            string text = source.Substring(start, current - start);
 
             TokenType type = TokenType.IDENTIFIER;
             bool exist =    keywords.TryGetValue(text, out type);
@@ -138,7 +138,7 @@ namespace Lox
             }
 
             addToken(TokenType.NUMBER,
-                Double.Parse(source.Substring(start, current-1)));
+                Double.Parse(source.Substring(start, (current   - start) )));
         }
 
         private char peekNext()
