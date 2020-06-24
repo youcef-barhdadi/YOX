@@ -6,6 +6,19 @@ using Lox.Experssion;
 
 namespace Lox
 {
+
+
+    public  class ParsserExpetion :Exception
+    {
+        public ParsserExpetion()
+        {
+
+        }
+        public ParsserExpetion(string? message) : base(message)
+        {
+
+        }
+    }
     public class Parser
     {
         public List<Token> Tokens { get;}
@@ -97,6 +110,36 @@ namespace Lox
                 new Unary(ex, opr);
             }
             return primary();
+        }
+
+        private Expr primary()
+        {
+            if (match(TokenType.FALSE))
+                return new Literal(TokenType.FALSE);
+            if (match(TokenType.TRUE))
+                return new Literal(TokenType.TRUE);
+            if (match(TokenType.NIL))
+                return new Literal(TokenType.NIL);
+            // not sure , check me after
+            if (match(TokenType.NUMBER, TokenType.STRING))
+                return new Literal(previous().Lexeme);
+
+            if (match(TokenType.LEFT_PAREN))
+            {
+                Expr e = expression();
+                consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
+                return new Grouping(e);
+            }
+            return null;
+        }
+
+        private Token consume(TokenType type, string v)
+        {
+            if (check(type))
+                return advance();
+            else
+            throw new Exception(v);
+
         }
 
         private Token previous()
