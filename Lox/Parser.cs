@@ -8,7 +8,7 @@ namespace Lox
 {
 
 
-    public  class ParsserExpetion :Exception
+    public class ParsserExpetion : Exception
     {
         public ParsserExpetion()
         {
@@ -21,7 +21,7 @@ namespace Lox
     }
     public class Parser
     {
-        public List<Token> Tokens { get;}
+        public List<Token> Tokens { get; }
 
         public int Current { get; set; } = 0;
 
@@ -30,6 +30,8 @@ namespace Lox
         {
             this.Tokens = tokens;
         }
+
+
 
 
         /*
@@ -45,6 +47,19 @@ namespace Lox
                            | "(" expression ")" ;
              
              */
+
+
+        public Expr Parse()
+        {
+            try
+            {
+                return expression();
+            }
+            catch (ParsserExpetion error)
+            {
+                return null;
+            }
+        }
 
         private Expr expression()
         {
@@ -107,13 +122,18 @@ namespace Lox
             {
                 Token opr = previous();
                 Expr ex = unary();
-                new Unary(ex, opr);
+              return  new Unary(ex, opr);
             }
             return primary();
         }
 
         private Expr primary()
         {
+            // CHeck me
+            if (match(TokenType.EOF))
+                return null;
+
+
             if (match(TokenType.FALSE))
                 return new Literal(TokenType.FALSE);
             if (match(TokenType.TRUE))
@@ -122,7 +142,7 @@ namespace Lox
                 return new Literal(TokenType.NIL);
             // not sure , check me after
             if (match(TokenType.NUMBER, TokenType.STRING))
-                return new Literal(previous().Lexeme);
+                return new Literal(previous().Literal);
 
             if (match(TokenType.LEFT_PAREN))
             {
@@ -130,15 +150,51 @@ namespace Lox
                 consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
                 return new Grouping(e);
             }
-            return null;
+
+            //  if we dont find literlel or expression
+            throw error(peek(), "Expect expression!.");
         }
+
+
+        private ParsserExpetion error(Token token, String message)
+        {
+            Program.error(token, message);
+            return new ParsserExpetion();
+        }
+
+
+        public void synchronize()
+        {
+            advance();
+
+            while (isAtEnd())
+            {
+                if (previous().type == TokenType.SEMICOLON)
+                    return;
+
+                switch (peek().type)
+                {
+                    case TokenType.CLASS:
+                    case TokenType.FUN:
+                    case TokenType.VAR:
+                    case TokenType.FOR:
+                    case TokenType.IF:
+                    case TokenType.WHILE:
+                    case TokenType.PRINT:
+                    case TokenType.RETURN:
+                        return;
+                }
+                advance();
+            }
+        }
+
 
         private Token consume(TokenType type, string v)
         {
             if (check(type))
                 return advance();
             else
-            throw new Exception(v);
+                throw error(peek(), v);
 
         }
 

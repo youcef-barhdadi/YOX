@@ -13,18 +13,18 @@ namespace Lox
 
         static void Main(string[] args)
         {
-            //    if (args.Length > 1)
-            //        Console.WriteLine("Usage: jlox [script]");
-            //    else if (args.Length == 1)
-            //        runFile(args[0]);
-            //    else
-            //        runPromp();
+            if (args.Length > 1)
+                Console.WriteLine("Usage: jlox [script]");
+            else if (args.Length == 1)
+                runFile(args[0]);
+            else
+                runPromp();
 
-            Expr expression = new Binary(new Unary(new Literal(1337),
-                                        new Token(TokenType.MINUS, "-",null, 1)),
-                                        new Token(TokenType.PLUS, "+",null, 1), new Literal(6));
+            //Expr expression = new Binary(new Unary(new Literal(1337),
+            //                            new Token(TokenType.MINUS, "-", null, 1)),
+            //                            new Token(TokenType.PLUS, "+", null, 1), new Literal(6));
 
-            Console.WriteLine(new RPN().print(expression)); ;
+            //Console.WriteLine(new RPN().print(expression)); ;
 
         }
 
@@ -52,15 +52,18 @@ namespace Lox
         {
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.scanTokens();
+            Parser p = new Parser(tokens);
 
+            Expr expression = p.Parse();
 
-            foreach (Token t in tokens)
-            {
-                Console.WriteLine(t);
-            }
+            if (expression == null)
+                return;
+
+            Console.WriteLine(new AstPrinter().print(expression));
+
         }
 
-        static void error(Token token, String message)
+        public static void error(Token token, String message)
         {
             if (token.type == TokenType.EOF)
             {
