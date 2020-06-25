@@ -18,16 +18,7 @@ namespace Lox.AST
             T visitLiteralExpr(Literal t);
             T visitBinaryExpr(Binary t);
             T visitUnaryExpr(Unary t);
-        }
-
-        public class Ternary : Stmt
-        {
-            public Exception Predcate { get; set; }
-
-            public override T Accept<T>(IVistor<T> visitor)
-            {
-                throw new NotImplementedException();
-            }
+            T visitTernaryExpr(Ternary t);
         }
     }
 }

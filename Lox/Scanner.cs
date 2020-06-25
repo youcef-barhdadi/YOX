@@ -56,6 +56,8 @@ namespace Lox
             {
                 case '(': addToken(TokenType.LEFT_PAREN); break;
                 case ')': addToken(TokenType.RIGHT_PAREN); break;
+                case '?': addToken(TokenType.QUTION); break;
+                case ':': addToken(TokenType.DDOT); break;
                 case '{': addToken(TokenType.LEFT_BRACE); break;
                 case '}': addToken(TokenType.RIGHT_BRACE); break;
                 case ',': addToken(TokenType.COMMA); break;

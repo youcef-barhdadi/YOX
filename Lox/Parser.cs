@@ -53,7 +53,7 @@ namespace Lox
         {
             try
             {
-                return expression();
+                return Tnary();
             }
             catch (ParsserExpetion error)
             {
@@ -61,6 +61,27 @@ namespace Lox
             }
         }
 
+
+        private  Expr Tnary()
+        {
+            Expr e = expression();
+
+            if (match(TokenType.QUTION))
+            {
+                Expr exp = expression();
+                Expr e2 = null;
+                if (match(TokenType.DDOT))
+                {
+                    e2 = expression();
+                }
+                else
+                    return null;
+
+                return new Ternary(e, exp, e2);
+            }
+
+            return e;
+        }
         private Expr expression()
         {
             return equality();
@@ -111,7 +132,6 @@ namespace Lox
                 Token opr = previous();
                 Expr right = unary();
                 exper = new Binary(exper, opr, right);
-
             }
             return exper;
         }
@@ -132,8 +152,6 @@ namespace Lox
             // CHeck me
             if (match(TokenType.EOF))
                 return null;
-
-
             if (match(TokenType.FALSE))
                 return new Literal(TokenType.FALSE);
             if (match(TokenType.TRUE))

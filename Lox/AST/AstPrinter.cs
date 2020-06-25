@@ -46,5 +46,10 @@ namespace Lox.AST
         {
             return parenthesize(t.Operator.Lexeme, t.Right);
         }
+
+        public string visitTernaryExpr(Ternary t)
+        {
+            return parenthesize("tay", t.Predcate, t.expre1, t.expre2);
+        }
     }
 }
