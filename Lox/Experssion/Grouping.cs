@@ -8,13 +8,10 @@ namespace Lox.Experssion
     {
         Expr expression;
 
-
-
         public Expr Experssion
         {
             get { return this.expression; } 
         }
-
 
         public Grouping(Expr exprssion)
         {
