@@ -8,7 +8,7 @@ namespace Lox
 {
     class Program
     {
-
+       static Interpreter inter = new Interpreter();
         static bool hadError = false;
         private static bool hadRuntimeError = false;
 
@@ -58,7 +58,6 @@ namespace Lox
             Parser p = new Parser(tokens);
 
             Expr expression = p.Parse();
-            Interpreter inter = new Interpreter();
 
             if (expression == null)
                 return;

@@ -161,6 +161,7 @@ namespace Lox
             if (isAtEnd())
             {
                 Program.error(line, "Unterminated string.");
+                return;
             }
             advance();
 
@@ -203,6 +204,7 @@ namespace Lox
         private char advance()
         {
             current++;
+            
             return source[current - 1];
         }
 

@@ -60,6 +60,10 @@ namespace Lox
                     {
                         return (string)left + (string)right;
                     }
+                    if (left is string  || right is string)
+                    {
+                        return left.ToString() + right.ToString();
+                    }
                     throw new RuntimeException(t.Operator, "Operands must be two numbers or two strings.");
                 case TokenType.MINUS:
                     checkNumberOperands(t.Operator, left, right);
@@ -86,8 +90,7 @@ namespace Lox
                     checkNumberOperands(t.Operator, left, right);
                     return (double)left <= (double)right;
                 case TokenType.EQUAL_EQUAL:
-                    checkNumberOperands(t.Operator, left, right);
-                    return isEqual(left, right);
+                            return isEqual(left, right);
                 case TokenType.BANG_EQUAL:
                     checkNumberOperands(t.Operator, left, right);
                     return !isEqual(left, right);
@@ -96,6 +99,11 @@ namespace Lox
             return null;
 
         }
+
+
+        
+
+
 
         private void checkNumberOperands(Token @operator, object right, object left)
         {
@@ -132,7 +140,11 @@ namespace Lox
 
         public object visitTernaryExpr(Ternary t)
         {
-            throw new NotImplementedException();
+            object predcate = evaluate(t.Predcate);
+
+            if (isTruthy(predcate))
+                    return evaluate(t.expre1);
+            return evaluate(t.expre2);
         }
 
         public object visitUnaryExpr(Unary t)
