@@ -73,6 +73,8 @@ namespace Lox
                     return (double)left * (double)right;
                 case TokenType.SLASH:
                     checkNumberOperands(t.Operator, left, right);
+                    if ((double)right == 0)
+                        throw new RuntimeException(t.Operator, "Can't devid by zero!");
                     return (double)left / (double)right;
 
                 // logic operator
@@ -92,10 +94,12 @@ namespace Lox
                 case TokenType.EQUAL_EQUAL:
                             return isEqual(left, right);
                 case TokenType.BANG_EQUAL:
-                    checkNumberOperands(t.Operator, left, right);
+                   // checkNumberOperands(t.Operator, left, right);
                     return !isEqual(left, right);
 
             }
+     
+     
             return null;
 
         }
