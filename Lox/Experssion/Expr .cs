@@ -11,7 +11,19 @@ namespace Lox.Experssion
     {
 
 
-        public abstract T accepte<T>(Stmt.IVistor<T> vistor);
+        public abstract T accepte<T>(Expr.IVistor<T> vistor);
+
+
+
+        public interface IVistor<T>
+        {
+
+            T visitGroupingExpr(Grouping t);
+            T visitLiteralExpr(Literal t);
+            T visitBinaryExpr(Binary t);
+            T visitUnaryExpr(Unary t);
+            T visitTernaryExpr(Ternary t);
+        }
 
     }
 }

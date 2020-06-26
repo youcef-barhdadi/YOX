@@ -18,7 +18,7 @@ namespace Lox.Experssion
             this.expre2 = e2;
         }
 
-        public override T accepte<T>(Stmt.IVistor<T> vistor)
+        public override T accepte<T>(Expr.IVistor<T> vistor)
         {
             return vistor.visitTernaryExpr(this);
         }

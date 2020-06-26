@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Lox.AST;
 using Lox.Experssion;
+using Lox.Stmts;
 
 namespace Lox
 {
@@ -49,18 +50,38 @@ namespace Lox
              */
 
 
-        public Expr Parse()
+        public List<Stmt> Parse()
         {
-            try
+            List<Stmt> statements = new List<Stmt>();
+            while (!isAtEnd())
             {
-                return Tnary();
+                statements.Add(statement());
             }
-            catch (ParsserExpetion error)
-            {
-                return null;
-            }
+
+            return statements;
         }
 
+        private Stmt statement()
+        {
+            if (match(TokenType.PRINT))
+                return printStatement();
+            return expressionStatement();
+        }
+
+        private Stmt expressionStatement()
+        {
+            Expr value = Tnary();
+            consume(TokenType.SEMICOLON, "Expect ';' after value.");
+            return new Expression(value);
+
+        }
+
+        private Stmt printStatement()
+        {
+            Expr value = expression();
+            consume(TokenType.SEMICOLON, "Expect ';' after value.");
+            return new Print(value);
+        }
 
         private  Expr Tnary()
         {

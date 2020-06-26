@@ -57,7 +57,7 @@ namespace Lox
             List<Token> tokens = scanner.scanTokens();
             Parser p = new Parser(tokens);
 
-            Expr expression = p.Parse();
+            List<Stmts.Stmt> expression = p.Parse();
 
             if (expression == null)
                 return;

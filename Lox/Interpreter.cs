@@ -3,26 +3,34 @@ using System.Collections.Generic;
 using System.Text;
 using Lox.AST;
 using Lox.Experssion;
-
+using Lox.Stmts;
 
 namespace Lox
 {
-    class Interpreter : Stmt.IVistor<object>
+    class Interpreter : Expr.IVistor<object> , Stmts.Stmt.Visitor<object>
     {
 
 
-        public void interpret(Expr expression)
+        public void interpret(List<Stmt> statements)
         {
             try
             {
-                object value = evaluate(expression);
-                Console.WriteLine(stringify(value));
+                foreach (Stmt item in statements)
+                {
+                    execute(item);
+                }
+                    
             }
             catch (RuntimeException  e)
             {
 
                 Program.runtimeError(e);
             }
+        }
+
+        private void execute(Stmt item)
+        {
+            item.accept(this);
         }
 
         private string stringify(object value)
@@ -104,11 +112,6 @@ namespace Lox
 
         }
 
-
-        
-
-
-
         private void checkNumberOperands(Token @operator, object right, object left)
         {
 
@@ -183,6 +186,26 @@ namespace Lox
             if (obj is bool)
                 return (bool)obj;
             return false;
+        }
+
+     
+        object Stmt.Visitor<object>.visitPrintStmt(Print stmt)
+        {
+
+           object value =  evaluate(stmt.Expression);
+           Console.WriteLine(stringify(value));
+
+
+
+            return null;
+        }
+
+        object Stmt.Visitor<object>.visitExpressionStmt(Expression stmt)
+        {
+
+            evaluate(stmt.expression);
+
+            return null;
         }
     }
 }

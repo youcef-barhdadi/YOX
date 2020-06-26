@@ -19,7 +19,7 @@ namespace Lox.Experssion
             this.Operator = tok;
         }
 
-        public override T accepte<T>(Stmt.IVistor<T> vistor)
+        public override T accepte<T>(Expr.IVistor<T> vistor)
         {
             return vistor.visitUnaryExpr(this);
         }

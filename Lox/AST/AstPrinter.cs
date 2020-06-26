@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Lox.AST
 {
-    public class AstPrinter : Stmt.IVistor<string>
+    public class AstPrinter : Expr.IVistor<string>
     {
       public  string print(Expr expr)
         {
             return expr.accepte(this);
         }
-        string Stmt.IVistor<string>.visitGroupingExpr(Grouping t)
+        string Expr.IVistor<string>.visitGroupingExpr(Grouping t)
         {
             return parenthesize("group", t.Experssion);
         }

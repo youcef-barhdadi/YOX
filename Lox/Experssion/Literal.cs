@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lox.Experssion
 {
-    public class Literal :Expr
+    public class Literal : Expr
     {
        // Object value;
 
@@ -18,7 +18,7 @@ namespace Lox.Experssion
           
         }
 
-        public override T accepte<T>(Stmt.IVistor<T> vistor)
+        public override T accepte<T>(Expr.IVistor<T> vistor)
         {
             return vistor.visitLiteralExpr(this);
         }
