@@ -9,45 +9,101 @@ namespace Lox
 {
     class Interpreter : Stmt.IVistor<object>
     {
+
+
+        public void interpret(Expr expression)
+        {
+            try
+            {
+                object value = evaluate(expression);
+                Console.WriteLine(stringify(value));
+            }
+            catch (RuntimeException  e)
+            {
+
+                Program.runtimeError(e);
+            }
+        }
+
+        private string stringify(object value)
+        {
+            if (value == null)
+                return "nil";
+
+            if (value is double)
+            {
+                string text = value.ToString();
+
+                if (text.EndsWith(".0"))
+                {
+                    text = text.Substring(0, text.Length - 2);
+                }
+                return text;
+            }
+            return value.ToString();
+         }
+
         public object visitBinaryExpr(Binary t)
         {
             object left = evaluate(t.Left);
             object right = evaluate(t.Right);
 
 
-            switch(t.Operator.Type)
+            switch (t.Operator.Type)
             {
                 case TokenType.PLUS:
-                 if (left is double && right is double)
+                    if (left is double && right is double)
+                    {
                         return (double)left + (double)right;
+                    }
                     if (left is string && right is string)
+                    {
                         return (string)left + (string)right;
-                    break;
+                    }
+                    throw new RuntimeException(t.Operator, "Operands must be two numbers or two strings.");
                 case TokenType.MINUS:
+                    checkNumberOperands(t.Operator, left, right);
                     return (double)left - (double)right;
                 case TokenType.STAR:
+                    checkNumberOperands(t.Operator, left, right);
                     return (double)left * (double)right;
                 case TokenType.SLASH:
+                    checkNumberOperands(t.Operator, left, right);
                     return (double)left / (double)right;
 
                 // logic operator
 
                 case TokenType.GREATER:
+                    checkNumberOperands(t.Operator, left, right);
                     return (double)left > (double)right;
                 case TokenType.GREATER_EQUAL:
+                    checkNumberOperands(t.Operator, left, right);
                     return (double)left >= (double)right;
                 case TokenType.LESS:
+                    checkNumberOperands(t.Operator, left, right);
                     return (double)left < (double)right;
                 case TokenType.LESS_EQUAL:
+                    checkNumberOperands(t.Operator, left, right);
                     return (double)left <= (double)right;
                 case TokenType.EQUAL_EQUAL:
+                    checkNumberOperands(t.Operator, left, right);
                     return isEqual(left, right);
                 case TokenType.BANG_EQUAL:
+                    checkNumberOperands(t.Operator, left, right);
                     return !isEqual(left, right);
 
             }
             return null;
 
+        }
+
+        private void checkNumberOperands(Token @operator, object right, object left)
+        {
+
+            if (left is double && right is double)
+                return;
+
+            throw new RuntimeException(@operator, "Operands must be numbers.");
         }
 
         private bool isEqual(object left, object right)
@@ -83,15 +139,25 @@ namespace Lox
         {
             object right = evaluate(t.Right);
 
-            switch(t.Operator.Type)
+            switch (t.Operator.Type)
             {
                 case TokenType.MINUS:
+                    checkNumberOperand(t.Operator, right);
                     return -(Double)right;
                 case TokenType.BANG:
                     return !isTruthy(right);
 
             }
             return null;
+        }
+
+        private void checkNumberOperand(Token @operator, object operand)
+        {
+
+            if (operand is double)
+                return;
+            throw new RuntimeException(@operator, "Operand must be a number");
+
         }
 
         private bool isTruthy(object obj)
