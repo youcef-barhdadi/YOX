@@ -23,6 +23,9 @@ namespace Lox.Experssion
             T visitBinaryExpr(Binary t);
             T visitUnaryExpr(Unary t);
             T visitTernaryExpr(Ternary t);
+
+            T visitVariableExpr(Variable t);
+
         }
 
     }

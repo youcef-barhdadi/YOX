@@ -10,6 +10,8 @@ namespace Lox.Stmts
         {
             T visitPrintStmt(Print stmt);
             T visitExpressionStmt(Expression stmt);
+            T visitVarStmt(Var stmt);
+
 
         }
         public abstract T accept<T>(Stmt.Visitor<T> visitor);

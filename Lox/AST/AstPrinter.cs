@@ -51,5 +51,10 @@ namespace Lox.AST
         {
             return parenthesize("tay", t.Predcate, t.expre1, t.expre2);
         }
+
+        public string visitVariableExpr(Variable t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -54,5 +54,10 @@ namespace Lox.AST
 
 
         }
+
+        public string visitVariableExpr(Variable t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

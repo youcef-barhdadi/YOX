@@ -11,6 +11,10 @@ namespace Lox
 
     public class ParsserExpetion : Exception
     {
+
+
+        private Dictionary<string, object> map = new Dictionary<string, object>();
+
         public ParsserExpetion()
         {
 
@@ -55,18 +59,48 @@ namespace Lox
             List<Stmt> statements = new List<Stmt>();
             while (!isAtEnd())
             {
-                statements.Add(statement());
+                statements.Add(declaration());
             }
 
             return statements;
         }
 
+
+        private Stmt declaration()
+        {
+            try
+            {
+                if (match(TokenType.VAR))
+                    return varDeclaration();
+                return statement();
+            }
+            catch
+            {
+                synchronize();
+                return null;
+            }
+        }
+
+        private  Stmt varDeclaration()
+        {
+            Token token = consume(TokenType.IDENTIFIER, "Expect variable name.");
+            Expr initi = null;
+            if (match(TokenType.EQUAL))
+            {
+                initi = Tnary();
+            }
+            consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+            return new Var(token, initi);
+        }
         private Stmt statement()
         {
             if (match(TokenType.PRINT))
                 return printStatement();
             return expressionStatement();
         }
+
+
+
 
         private Stmt expressionStatement()
         {
@@ -78,7 +112,7 @@ namespace Lox
 
         private Stmt printStatement()
         {
-            Expr value = expression();
+            Expr value = Tnary();
             consume(TokenType.SEMICOLON, "Expect ';' after value.");
             return new Print(value);
         }
@@ -182,6 +216,8 @@ namespace Lox
             // not sure , check me after
             if (match(TokenType.NUMBER, TokenType.STRING))
                 return new Literal(previous().Literal);
+            if (match(TokenType.IDENTIFIER))
+                return new Variable(previous());
 
             if (match(TokenType.LEFT_PAREN))
             {

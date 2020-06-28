@@ -11,6 +11,8 @@ namespace Lox
     {
 
 
+        private Environment env = new Environment();
+
         public void interpret(List<Stmt> statements)
         {
             try
@@ -205,6 +207,24 @@ namespace Lox
 
             evaluate(stmt.expression);
 
+            return null;
+        }
+
+        public object visitVariableExpr(Variable t)
+        {
+            return env.Get(t.Name);
+        }
+
+        public object visitVarStmt(Var stmt)
+        {
+            object value = null;
+
+            if (stmt.Initializer != null)
+            {
+                value = evaluate(stmt.Initializer);
+            }
+
+            env.Define(stmt.Name.lexeme, value);
             return null;
         }
     }

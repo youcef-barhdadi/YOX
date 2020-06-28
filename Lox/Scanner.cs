@@ -120,6 +120,8 @@ namespace Lox
 
             TokenType type = TokenType.IDENTIFIER;
             bool exist =    keywords.TryGetValue(text, out type);
+            if (!exist)
+                type = TokenType.IDENTIFIER;
             addToken(type);
         }
        
