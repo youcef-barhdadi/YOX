@@ -139,8 +139,33 @@ namespace Lox
         }
         private Expr expression()
         {
-            return equality();
+            return assignment();
         }
+        
+        private  Expr assignment()
+        {
+            Expr ex = equality();
+
+
+            if (match(TokenType.EQUAL))
+            {
+                Token equle = previous();
+
+                // check me if somting happen 
+                Expr value = Tnary();
+                if (ex is Variable)
+                {
+                    Token name = ((Variable)ex).Name;
+                    return new Assign(name, value);
+                }
+                error(equle, "Invalid assignment target.");
+
+
+            }
+
+            return ex;
+        }
+
 
         private Expr equality()
         {
@@ -221,7 +246,7 @@ namespace Lox
 
             if (match(TokenType.LEFT_PAREN))
             {
-                Expr e = expression();
+                Expr e = Tnary();
                 consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
                 return new Grouping(e);
             }

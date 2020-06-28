@@ -18,10 +18,10 @@ namespace Lox
 
         public void Define(string name, object  value)
         {
-             map.Add(name, value);
+             //map.Add(name, value);
 
 
-           // map[name] = value;
+           map[name] = value;
         }
 
         public object Get(Token name)

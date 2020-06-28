@@ -14,12 +14,14 @@ namespace Lox
 
         static void Main(string[] args)
         {
+            Console.WriteLine(System.Environment.CurrentDirectory);
             if (args.Length > 1)
                 Console.WriteLine("Usage: jlox [script]");
             else if (args.Length == 1)
                 runFile(args[0]);
             else
                 runPromp();
+            ///runFile("../../../test/first.lox");
 
             //Expr expression = new Binary(new Unary(new Literal(1337),
             //                            new Token(TokenType.MINUS, "-", null, 1)),
@@ -36,6 +38,7 @@ namespace Lox
                 string s = Console.ReadLine();
                 run(s);
                 hadError = false;
+                hadRuntimeError = false;
             }
         }
 
@@ -60,6 +63,8 @@ namespace Lox
             List<Stmts.Stmt> expression = p.Parse();
 
             if (expression == null)
+                return;
+            if (hadRuntimeError)
                 return;
             inter.interpret(expression);
 

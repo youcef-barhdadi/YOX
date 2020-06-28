@@ -28,6 +28,11 @@ namespace Lox
 
                 Program.runtimeError(e);
             }
+            catch 
+            {
+                System.Environment.Exit(5);
+
+            }
         }
 
         private void execute(Stmt item)
@@ -225,6 +230,14 @@ namespace Lox
             }
 
             env.Define(stmt.Name.lexeme, value);
+            return null;
+        }
+
+        public object visitAssignExpr(Assign t)
+        {
+            object value = evaluate(t.Value);
+            env.Define(t.Name.lexeme, value);
+
             return null;
         }
     }

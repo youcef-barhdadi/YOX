@@ -59,5 +59,10 @@ namespace Lox.AST
         {
             throw new NotImplementedException();
         }
+
+        public string visitAssignExpr(Assign t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
