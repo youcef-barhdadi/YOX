@@ -111,6 +111,7 @@ namespace Lox
             Stmt elsebranch = null;
             if (check(TokenType.ELSE))
             {
+                advance();
                 elsebranch = statement();
             }
             return new If(condation, thenbranch, elsebranch) ;

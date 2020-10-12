@@ -15,8 +15,6 @@ namespace Lox.Stmts
             T visitIfStmt(If stmt);
 
 
-
-
         }
         public abstract T accept<T>(Stmt.Visitor<T> visitor);
     }

@@ -1,5 +1,14 @@
 ﻿print "hello world";
 if (false)
-	print "how are you?";
+{
+	var a = 1335;
+
+	print a + 2;
+}
 else 
-print "how";
+{
+
+	if (1==1)
+		print "hehehe";
+
+}
