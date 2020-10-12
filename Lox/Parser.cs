@@ -41,13 +41,12 @@ namespace Lox
 
         /*
          
-             expression     → equality ;
+            expression     → equality ;
             equality       → comparison ( ( "!=" | "==" ) comparison )* ;
             comparison     → addition ( ( ">" | ">=" | "<" | "<=" ) addition )* ;
             addition       → multiplication ( ( "-" | "+" ) multiplication )* ;
             multiplication → unary ( ( "/" | "*" ) unary )* ;
-            unary          → ( "!" | "-" ) unary
-                           | primary ;
+            unary          → ( "!" | "-" ) unary | primary ;
             primary        → NUMBER | STRING | "false" | "true" | "nil"
                            | "(" expression ")" ;
              
@@ -94,12 +93,41 @@ namespace Lox
         }
         private Stmt statement()
         {
+            if (match(TokenType.IF))
+                return (ifStatement());
             if (match(TokenType.PRINT))
                 return printStatement();
+            if (match(TokenType.LEFT_BRACE))
+                return new Block(block());
             return expressionStatement();
         }
+        public Stmt ifStatement()
+        {
+            consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
+            Expr condation = expression();
+            consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
 
+            Stmt thenbranch = statement();
+            Stmt elsebranch = null;
+            if (check(TokenType.ELSE))
+            {
+                elsebranch = statement();
+            }
+            return new If(condation, thenbranch, elsebranch) ;
+        }
 
+        private List<Stmt> block()
+        {
+            List<Stmt> statements = new List<Stmt>();
+
+            while(!check(TokenType.RIGHT_BRACE) &&  !isAtEnd())
+            {
+                statements.Add(declaration());
+            }
+            consume(TokenType.RIGHT_BRACE, "Expect '}' after block.");
+
+            return statements;
+        }
 
 
         private Stmt expressionStatement()

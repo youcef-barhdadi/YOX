@@ -14,14 +14,16 @@ namespace Lox
 
         static void Main(string[] args)
         {
-            Console.WriteLine(System.Environment.CurrentDirectory);
+            //Console.WriteLine(System.Environment.CurrentDirectory);
             if (args.Length > 1)
                 Console.WriteLine("Usage: jlox [script]");
-            else if (args.Length == 1)
-                runFile(args[0]);
-            else
-                runPromp();
-            ///runFile("../../../test/first.lox");
+            //else if (args.Length == 1)
+            //    runFile(args[0]);
+            //else
+
+            //while(true)
+            //    runPromp();
+            runFile("../../../test/first.lox");
 
             //Expr expression = new Binary(new Unary(new Literal(1337),
             //                            new Token(TokenType.MINUS, "-", null, 1)),

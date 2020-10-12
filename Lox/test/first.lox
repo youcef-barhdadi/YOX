@@ -1,8 +1,5 @@
-﻿var l = 1337; l++;
-
-print "just magic number " +  l;
-print "hello word";
-var c = 0;
-c = c == 05 ? c + 1 : l;
-
-print c;
+﻿print "hello world";
+if (false)
+	print "how are you?";
+else 
+print "how";

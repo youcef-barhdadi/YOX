@@ -192,6 +192,9 @@ namespace Lox
                 return false;
             if (obj is bool)
                 return (bool)obj;
+            if (obj is TokenType)
+                return (TokenType)obj == TokenType.TRUE;
+
             return false;
         }
 
@@ -232,13 +235,51 @@ namespace Lox
             env.Define(stmt.Name.lexeme, value);
             return null;
         }
+        public object visitBlockStmt(Block  block)
+        {
+            executeBlock(block.statements,   new Environment(env));
+            return null;
+        }
+
+        private void executeBlock(List<Stmt> statements, Environment environment)
+        {
+            Environment previous = this.env;
+            try
+            {
+                this.env = environment;
+                foreach (var item in statements)
+                {
+                    execute(item);
+                }
+            }
+            finally
+            {
+                this.env = previous;
+            }
+        }
 
         public object visitAssignExpr(Assign t)
         {
             object value = evaluate(t.Value);
-            env.Define(t.Name.lexeme, value);
+      //      env.Define(t.Name.lexeme, value);
+            env.assign(t.Name, value);
+            return null;
+        }
+
+        object Stmt.Visitor<object>.visitIfStmt(If stmt)
+        {
+            if (isTruthy(evaluate(stmt.condation)))
+            {
+                execute(stmt.thenBranch);
+            }
+            else if (stmt.elseBranch != null)
+            {
+                execute(stmt.elseBranch);
+            }
 
             return null;
         }
+
+     
     }
 }
