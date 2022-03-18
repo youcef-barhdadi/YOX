@@ -30,11 +30,5 @@ namespace Lox
         {
             return $"TYPE {type}  Lexem {lexeme} Literal {Literal}";
         }
-
-
-
-
-   
-
     }
 }

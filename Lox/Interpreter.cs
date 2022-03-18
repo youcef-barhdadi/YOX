@@ -152,6 +152,25 @@ namespace Lox
             return t.Value;
         }
 
+        public object visitLogicalExpr(Logical exper)
+        {
+            object left = evaluate(exper.Left);
+
+            if (exper.Operator.type == TokenType.OR)
+            {
+                // we need just to check just left if it  is true leave
+               if (isTruthy(left))
+                    return left;
+            }else
+            {
+                // in the case of and if the left is false just leave
+                if (!isTruthy(left))
+                    return left;
+            }
+
+            return evaluate(exper.Right);
+        }
+
         public object visitTernaryExpr(Ternary t)
         {
             object predcate = evaluate(t.Predcate);
@@ -204,9 +223,6 @@ namespace Lox
 
            object value =  evaluate(stmt.Expression);
            Console.WriteLine(stringify(value));
-
-
-
             return null;
         }
 
@@ -235,6 +251,18 @@ namespace Lox
             env.Define(stmt.Name.lexeme, value);
             return null;
         }
+        
+        public  object visitWhileStmt(While stmt)
+        {
+            while (isTruthy(evaluate(stmt.Condition)))
+            {
+                execute(stmt.Body);
+            }
+            return null;
+        }
+
+
+
         public object visitBlockStmt(Block  block)
         {
             executeBlock(block.statements,   new Environment(env));
@@ -280,6 +308,9 @@ namespace Lox
             return null;
         }
 
-     
+        //public object visitWhileStmt(While stmt)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

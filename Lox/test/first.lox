@@ -1,14 +1,9 @@
-﻿print "hello world";
-if (false)
+﻿print "hi";
+var i = 0;
+while (true)
 {
-	var a = 1335;
-
-	print a + 2;
-}
-else 
-{
-
-	if (1==1)
-		print "hehehe";
-
+	i = i + 1;
+	//if (i / 10 == 0)
+		print i;
+	//print i;
 }

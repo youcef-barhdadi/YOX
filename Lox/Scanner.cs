@@ -77,7 +77,7 @@ namespace Lox
                     }
                     else if (match('*'))
                     {
-                        /**/
+                        /*      */
                         while ((peek() != '*' && peekNext() != '/'))
                         {
                             if (peek() == '\n')

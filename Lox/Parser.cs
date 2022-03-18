@@ -41,6 +41,10 @@ namespace Lox
 
         /*
          
+
+            
+            
+
             expression     → equality ;
             equality       → comparison ( ( "!=" | "==" ) comparison )* ;
             comparison     → addition ( ( ">" | ">=" | "<" | "<=" ) addition )* ;
@@ -64,7 +68,7 @@ namespace Lox
             return statements;
         }
 
-
+      
         private Stmt declaration()
         {
             try
@@ -91,16 +95,33 @@ namespace Lox
             consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
             return new Var(token, initi);
         }
+
+
+        private  Stmt whileStatement()
+        {
+            consume(TokenType.LEFT_PAREN, "Expected '(' after while.");
+            Expr condition = expression();
+            consume(TokenType.RIGHT_PAREN, "Expected ')' after condition");
+
+            Stmt body = statement();
+
+            return new While(condition, body);
+        }
+
+
         private Stmt statement()
         {
             if (match(TokenType.IF))
                 return (ifStatement());
             if (match(TokenType.PRINT))
                 return printStatement();
+            if (match(TokenType.WHILE))
+                return whileStatement();
             if (match(TokenType.LEFT_BRACE))
                 return new Block(block());
             return expressionStatement();
         }
+        
         public Stmt ifStatement()
         {
             consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
@@ -173,13 +194,10 @@ namespace Lox
         
         private  Expr assignment()
         {
-            Expr ex = equality();
-
-
+            Expr ex = or();
             if (match(TokenType.EQUAL))
             {
                 Token equle = previous();
-
                 // check me if somting happen 
                 Expr value = Tnary();
                 if (ex is Variable)
@@ -188,11 +206,35 @@ namespace Lox
                     return new Assign(name, value);
                 }
                 error(equle, "Invalid assignment target.");
-
-
             }
-
             return ex;
+        }
+
+        private Expr or()
+        {
+            Expr exper = and();
+
+            while (match(TokenType.OR))
+            {
+                Token opra  = previous();
+                Expr right = and();
+                exper = new Logical(exper, opra, right);
+            }
+            return exper;
+        }
+
+        
+        private Expr and()
+        {
+            Expr exper = equality();
+
+            while (match(TokenType.AND))
+            {
+                Token opr  = previous();
+                Expr right = equality();
+                exper = new Logical(exper, opr, right);
+            }
+            return exper;
         }
 
 

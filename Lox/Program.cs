@@ -46,6 +46,12 @@ namespace Lox
 
         private static void runFile(string filename)
         {
+            if (!File.Exists(filename))
+            {
+                Console.WriteLine("File dosn't exist");
+                return ;
+            }
+
             string text = File.ReadAllText(filename);
 
             run(text);

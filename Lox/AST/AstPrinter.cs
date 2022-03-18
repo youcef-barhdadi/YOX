@@ -61,5 +61,11 @@ namespace Lox.AST
         {
             throw new NotImplementedException();
         }
+
+
+        public string visitLogicalExpr(Logical t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace Lox.Stmts
             T visitVarStmt(Var stmt);
             T visitBlockStmt(Block stmt);
             T visitIfStmt(If stmt);
+            T visitWhileStmt(While stmt);
 
 
         }
